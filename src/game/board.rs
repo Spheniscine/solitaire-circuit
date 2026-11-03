@@ -130,7 +130,8 @@ pub struct Board {
     pub num_energy: u8,
     pub animation_acts: Vec<AnimationAct>,
 
-    // todo: cache powered state of cards / grid
+    #[serde(skip)]
+    is_powered_cache: Vec<bool>,
 }
 
 impl Board {
@@ -140,6 +141,7 @@ impl Board {
             selected: None,
             num_energy: 0,
             animation_acts: vec![],
+            is_powered_cache: vec![],
         }
     }
 
@@ -164,5 +166,73 @@ impl Board {
         res.num_energy = MAX_ENERGY;
 
         res
+    }
+
+    fn populate_is_powered_cache(&mut self) {
+        let mut vis = vec![false; NUM_DEPOTS];
+        let mut stk = vec![];
+        for id in DepotRole::Source.range() {
+            vis[id] = true;
+            stk.push(id);
+        }
+
+        while let Some(u) = stk.pop() {
+            let Some(pos) = depot_to_grid_pos(u) else {continue};
+            let Some(&cu) = self.depots[u].first() else {continue};
+
+            for &dir in cu.connections() {
+                let Some(v) = grid_pos_to_depot(pos + dir) else {continue};
+                if vis[v] { continue; }
+                let Some(&cv) = self.depots[v].first() else {continue};
+                if !cv.connections().contains(&!dir) { continue; }
+                vis[v] = true;
+                stk.push(v);
+            }
+        }
+
+        self.is_powered_cache = vis;
+    }
+
+    pub fn invalidate_cache(&mut self) {
+        self.is_powered_cache = vec![];
+    }
+
+    pub fn is_powered(&mut self, depot: usize) -> bool {
+        if self.is_powered_cache.is_empty() {
+            self.populate_is_powered_cache();
+        }
+
+        self.is_powered_cache[depot]
+    }
+
+    pub fn do_move(&mut self, pos1: BoardPos, pos2: BoardPos) {
+        self.selected = None;
+
+        let Some(card) = self.depots[pos1.depot_index].drain(pos1.card_index ..).next() else {return};
+        let card2 = self.depots[pos2.depot_index].drain(pos2.card_index ..).next();
+        self.animation_acts.push(AnimationAct::Move(card, pos1, pos2));
+        if let Some(card2) = card2 {
+            self.animation_acts.push(AnimationAct::Move(card2, pos2, pos1));
+        }
+        self.invalidate_cache();
+    }
+
+    pub fn advance_actions(&mut self) {
+        for act in self.animation_acts.drain(..) {
+            match act {
+                AnimationAct::Move (card, _, pos2) => {
+                    self.depots[pos2.depot_index].push(card);
+                },
+            }
+        }
+        self.invalidate_cache();
+    }
+
+    pub fn top_pos(&self, depot: usize) -> BoardPos {
+        BoardPos::new(depot, self.depots[depot].len())
+    }
+
+    pub fn last_pos(&self, depot: usize) -> BoardPos {
+        BoardPos::new(depot, self.depots[depot].len().wrapping_sub(1))
     }
 }
