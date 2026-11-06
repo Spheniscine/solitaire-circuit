@@ -1,11 +1,11 @@
-// mod utils;
-// pub use utils::*;
+mod utils;
+pub use utils::*;
 
-// mod card;
-// pub use card::*;
+mod card;
+pub use card::*;
 
-// mod skin;
-// // pub use skin::*;
+mod skin;
+// pub use skin::*;
 
 // mod board;
 // pub use board::*;
@@ -22,8 +22,8 @@ pub use hero::*;
 // mod local_storage;
 // pub use local_storage::LocalStorage;
 
-// mod emoji;
-// pub use emoji::*;
+mod emoji;
+pub use emoji::*;
 
 // mod help;
 // pub use help::*;
