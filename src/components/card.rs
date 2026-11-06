@@ -109,8 +109,8 @@ pub fn BaseCardComponent<C: PartialEq + Clone + 'static, S: SkinTrait<C> + 'stat
                 top: rem(position.y),
                 left: rem(position.x),
                 background_color: color_mode.choose("#fff", "#101"),
-                width: pt(BASE_CARD_WIDTH - 1.),
-                height: pt(BASE_CARD_HEIGHT - 1.),
+                width: pt(BASE_CARD_WIDTH - 0.5),
+                height: pt(BASE_CARD_HEIGHT - 0.5),
                 border: "{pt(0.25)} solid",
                 border_color: color_mode.choose("#000", "#868"),
                 border_radius: rem(width * CARD_BORDER_RADIUS_RATIO),
@@ -119,7 +119,6 @@ pub fn BaseCardComponent<C: PartialEq + Clone + 'static, S: SkinTrait<C> + 'stat
                 grid_template_rows: "50% 50%",
                 font_size: rem(width * CARD_FONT_RATIO),
                 text_align: "center",
-                padding: pt(0.25),
                 color: skin.get_color(&card, !color_mode),
 
                 onclick, ondoubleclick,
