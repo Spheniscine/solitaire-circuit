@@ -161,11 +161,12 @@ impl GameState {
                 self.do_move_raw(pos1, pos2);
             },
             DepotRole::Foundation => {
-                let ok = if let Some(&c) = depot2.last() {
-                    card.suit == c.suit && card.rank == c.rank + 1
-                } else {
-                    card.rank == 1
-                };
+                let ok = self.board.is_powered(pos1.depot_index) &&
+                    if let Some(&c) = depot2.last() {
+                        card.suit == c.suit && card.rank == c.rank + 1
+                    } else {
+                        card.rank == 1
+                    };
 
                 if !ok { return false; }
                 // update to energy only done after animation is finalized
