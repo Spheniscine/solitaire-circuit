@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::{CARD_BORDER_RADIUS_RATIO, CARD_HEIGHT_RATIO, CardComponent, CardFrame, Movement, SkinTrait, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, DepotRole, NUM_DEPOTS, RANK_MIN, Skin, Suit, depot_to_grid_pos}};
+use crate::{components::{CARD_BORDER_RADIUS_RATIO, CARD_HEIGHT_RATIO, CardComponent, CardFrame, EMOJI_MAP, Movement, SkinTrait, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, DepotRole, MAX_ENERGY, NUM_DEPOTS, RANK_MIN, Skin, Suit, depot_to_grid_pos}};
 
 #[component]
 pub fn BoardComponent(
@@ -33,7 +33,7 @@ pub fn BoardComponent(
         margin_y + i as f32 * (card_height + spacer_y)
     };
 
-    let foundation_offset_y = 3f32;
+    let foundation_offset_y = 6f32;
     let foundation_x = 100f32 - margin_x - card_width;
 
     let get_pos = |depot: usize, ord: usize| {
@@ -87,11 +87,28 @@ pub fn BoardComponent(
 
     let selected_height = card_height;
 
+    let energy_indicator = {
+        let size = 5f32;
+        (0..MAX_ENERGY).map(move |i| {
+            let asset = if i < board.num_energy { EMOJI_MAP["⚡"] } else { EMOJI_MAP["OFF"] };
+            let pos_x = 100. - margin_x - size * (MAX_ENERGY-i) as f32;
+            rsx! {
+                img {
+                    style: "width: {rem(size)}; height: {rem(size)}; position: absolute;
+                        left: {rem(pos_x)}; top: {rem(margin_y)};",
+                    src: asset,
+                }
+            }
+        })
+    };
+
     rsx! {
         div {
             position: "absolute",
             top: rem(position.y),
             left: rem(position.x),
+
+            {energy_indicator}
 
             for depot in 0..NUM_DEPOTS {
                 if let Some(hint) = get_hint(depot) {
