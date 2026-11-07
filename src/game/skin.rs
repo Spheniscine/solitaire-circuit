@@ -5,7 +5,7 @@ use strum_macros::{EnumIter, FromRepr};
 
 use crate::game::Suit;
 
-#[derive(Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, Debug, EnumIter, strum_macros::Display, Default)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, Debug, EnumIter, strum_macros::Display, Default, FromRepr)]
 pub enum RankSkin {
     #[default]
     Numbers,
