@@ -149,7 +149,6 @@ impl ColorSkin {
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, Debug, Default)]
 pub struct Skin {
-    #[serde(default)]
     pub ranks: RankSkin,
     pub suits: SuitSkin,
     pub colors: ColorSkin,
