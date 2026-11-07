@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::rem, game::{Card, ColorMode, Direction, Skin}};
+use crate::{components::rem, game::{Card, ColorMode, Direction, RANK_KING, Skin}};
 
 pub trait SkinTrait<C>: PartialEq + Clone {
     fn get_color(&self, card: &C, mode: ColorMode) -> String;
@@ -49,6 +49,20 @@ pub fn CardComponent(
         }
     });
 
+    let power_symbol = (card.rank == RANK_KING).then(|| {
+        let size = 2.25f32;
+        rsx! {
+            g {
+                dangerous_inner_html: format!(include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/emoji/zap_filled.svg.template")), 
+                    x = mid_x - size / 2.,
+                    y = mid_y - size / 2.,
+                    width = size,
+                    height = size,
+                )
+            }
+        }
+    });
+
     rsx! {
         BaseCardComponent { 
             position,
@@ -75,6 +89,7 @@ pub fn CardComponent(
             }
 
             {wires}
+            {power_symbol}
         }
     }
 }

@@ -6,6 +6,7 @@ use crate::{components::CardComponent, game::{Card, Skin}};
 #[component]
 pub fn Hero() -> Element {
     let test_card = Card { rank: 13, suit: crate::game::Suit::Spades };
+    let is_powered = true;
     let skin = Skin::default();
 
     rsx! {
@@ -18,7 +19,7 @@ pub fn Hero() -> Element {
                 width: 12.,
                 card: test_card,
                 skin,
-                is_powered: true,
+                is_powered,
             }
         }
     }
