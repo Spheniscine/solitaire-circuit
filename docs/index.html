@@ -5,14 +5,14 @@
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="UTF-8" />
-  <link rel="preload" as="script" href="/solitaire-circuit/assets/solitaire-circuit-8706543c298b4b3a.js" crossorigin><link rel="preload" as="fetch" type="application/wasm" href="/solitaire-circuit/assets/solitaire-circuit_bg-10e977f515938784.wasm" crossorigin></head>
+  <link rel="preload" as="script" href="/solitaire-circuit/assets/solitaire-circuit-8706543c298b4b3a.js" crossorigin><link rel="preload" as="fetch" type="application/wasm" href="/solitaire-circuit/assets/solitaire-circuit_bg-1fc41cbe0cd975fa.wasm" crossorigin></head>
   <body>
     <div id="main"></div>
   <script>
             // We can't use a module script here because we need to start the script immediately when streaming
             import("/solitaire-circuit/assets/solitaire-circuit-8706543c298b4b3a.js").then(
                 ({ default: init }) => {
-                init("/solitaire-circuit/assets/solitaire-circuit_bg-10e977f515938784.wasm").then((wasm) => {
+                init("/solitaire-circuit/assets/solitaire-circuit_bg-1fc41cbe0cd975fa.wasm").then((wasm) => {
                     if (wasm.__wbindgen_start == undefined) {
                     wasm.main();
                     }

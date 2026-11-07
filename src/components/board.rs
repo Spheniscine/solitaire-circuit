@@ -21,8 +21,8 @@ pub fn BoardComponent(
 ) -> Element {
     let card_width = 12f32;
     let card_height = card_width * CARD_HEIGHT_RATIO;
-    let spacer_x = 1f32;
-    let spacer_y = 1f32;
+    let spacer_x = 0.5f32;
+    let spacer_y = 0.5f32;
 
     let margin_x = 2f32;
     let pos_x = |i: usize| {
@@ -33,8 +33,12 @@ pub fn BoardComponent(
         margin_y + i as f32 * (card_height + spacer_y)
     };
 
-    let foundation_offset_y = 6f32;
+    let foundation_offset_y = 6.5f32;
     let foundation_x = 100f32 - margin_x - card_width;
+    let foundation_spacer = 1.5f32;
+    let foundation_pos_y = |i: usize| {
+        margin_y + foundation_offset_y + i as f32 * (card_height + foundation_spacer)
+    };
 
     let get_pos = |depot: usize, _ord: usize| {
         let (role, index) = DepotRole::role_and_subindex(depot).unwrap();
@@ -43,7 +47,7 @@ pub fn BoardComponent(
                 let [y, x] = depot_to_grid_pos(depot).unwrap();
                 Vec2::new(pos_x(x), pos_y(y))
             }
-            DepotRole::Foundation => Vec2::new(foundation_x, pos_y(index) + foundation_offset_y),
+            DepotRole::Foundation => Vec2::new(foundation_x, foundation_pos_y(index)),
         }
     };
     
