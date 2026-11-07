@@ -10,8 +10,8 @@ pub fn Movement(
 ) -> Element {
     rsx! {
         div {
-            style: "--translateX: {rem(src_translate_vec.x)}; --translateY: {rem(src_translate_vec.y)}; 
-            animation: {ANIMATION_DURATION.as_secs_f32()}s movement;",
+            style: "--translateX: {rem(src_translate_vec.x)}; --translateY: {rem(src_translate_vec.y)}; \
+                animation: {ANIMATION_DURATION.as_secs_f32()}s movement;",
             {children},
         }
     }

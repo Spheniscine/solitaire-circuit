@@ -74,10 +74,10 @@ pub fn CardComponent(
             ondoubleclick,
         }
         svg {
-            style: "position: absolute; 
-            left: {rem(position.x)}; top: {rem(position.y)}; 
-            width: {rem(width)}; height: {rem(width * CARD_HEIGHT_RATIO)};
-            pointer-events: none;",
+            style: "position: absolute; \
+                left: {rem(position.x)}; top: {rem(position.y)}; \
+                width: {rem(width)}; height: {rem(width * CARD_HEIGHT_RATIO)}; \
+                pointer-events: none;",
             view_box: "0 0 {BASE_CARD_WIDTH} {BASE_CARD_HEIGHT}",
             xmlns: "http://www.w3.org/2000/svg",
 

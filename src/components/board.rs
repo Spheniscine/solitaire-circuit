@@ -94,7 +94,7 @@ pub fn BoardComponent(
             let pos_x = 100. - margin_x - size * (MAX_ENERGY-i) as f32;
             rsx! {
                 img {
-                    style: "width: {rem(size)}; height: {rem(size)}; position: absolute;
+                    style: "width: {rem(size)}; height: {rem(size)}; position: absolute; \
                         left: {rem(pos_x)}; top: {rem(margin_y)};",
                     src: asset,
                 }
