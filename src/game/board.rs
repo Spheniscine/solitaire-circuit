@@ -1,4 +1,4 @@
-use std::ops::Range;
+use std::{cell::RefCell, ops::Range};
 
 use serde::{Deserialize, Serialize};
 use serde_tuple::{Deserialize_tuple, Serialize_tuple};
@@ -131,7 +131,7 @@ pub struct Board {
     pub animation_acts: Vec<AnimationAct>,
 
     #[serde(skip)]
-    is_powered_cache: Vec<bool>,
+    is_powered_cache: RefCell<Vec<bool>>,
 }
 
 impl Board {
@@ -141,7 +141,7 @@ impl Board {
             selected: None,
             num_energy: 0,
             animation_acts: vec![],
-            is_powered_cache: vec![],
+            is_powered_cache: RefCell::new(vec![]),
         }
     }
 
@@ -167,7 +167,7 @@ impl Board {
         res
     }
 
-    fn populate_is_powered_cache(&mut self) {
+    fn populate_cache(&self) {
         let mut vis = vec![false; NUM_DEPOTS];
         let mut stk = vec![];
         for id in DepotRole::Source.range() {
@@ -189,19 +189,19 @@ impl Board {
             }
         }
 
-        self.is_powered_cache = vis;
+        *self.is_powered_cache.borrow_mut() = vis;
     }
 
     pub fn invalidate_cache(&mut self) {
-        self.is_powered_cache = vec![];
+        *self.is_powered_cache.borrow_mut() = vec![];
     }
 
-    pub fn is_powered(&mut self, depot: usize) -> bool {
-        if self.is_powered_cache.is_empty() {
-            self.populate_is_powered_cache();
+    pub fn is_powered(&self, depot: usize) -> bool {
+        if self.is_powered_cache.borrow().is_empty() {
+            self.populate_cache();
         }
 
-        self.is_powered_cache[depot]
+        self.is_powered_cache.borrow()[depot]
     }
 
     // NOTE: works differently than most games; moves only one card, but may swap with another card
