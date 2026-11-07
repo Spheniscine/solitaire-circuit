@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::CardComponent, game::{Card, Skin}};
+use crate::{components::{CardComponent, EMOJI_MAP}, game::{Card, Skin}};
 
 #[component]
 pub fn Hero() -> Element {
@@ -21,6 +21,18 @@ pub fn Hero() -> Element {
                 skin,
                 is_powered,
             }
+
+            div {
+                id: "preloaded-images",
+
+                for asset in EMOJI_MAP.values() {
+                    img {
+                        src: *asset,
+                        width: 1,
+                        height: 1,
+                    }
+                }
+            },
         }
     }
 }
