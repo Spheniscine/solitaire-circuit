@@ -1,9 +1,16 @@
 [application]
 
+# `build` & `serve` dist path
+platform = "web"
+
+[web]
+pre_compress = false
+
 [web.app]
+base_path = "solitaire-circuit"
 
 # HTML title tag content
-title = "solitaire-circuit"
+title = "Circuit Solitaire"
 
 # include `assets` in web platform
 [web.resource]

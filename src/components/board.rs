@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 use glam::Vec2;
 
-use crate::{components::{CARD_BORDER_RADIUS_RATIO, CARD_HEIGHT_RATIO, CardComponent, CardFrame, EMOJI_MAP, Movement, SkinTrait, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, DepotRole, MAX_ENERGY, NUM_DEPOTS, RANK_MIN, Skin, Suit, depot_to_grid_pos}};
+use crate::{components::{CARD_BORDER_RADIUS_RATIO, CARD_HEIGHT_RATIO, CardComponent, CardFrame, EMOJI_MAP, Movement, SkinTrait, rem}, game::{AnimationAct, AnimationKey, Board, BoardPos, Card, DepotRole, MAX_ENERGY, NUM_DEPOTS, Skin, Suit, depot_to_grid_pos}};
 
 #[component]
 pub fn BoardComponent(
@@ -36,7 +36,7 @@ pub fn BoardComponent(
     let foundation_offset_y = 6f32;
     let foundation_x = 100f32 - margin_x - card_width;
 
-    let get_pos = |depot: usize, ord: usize| {
+    let get_pos = |depot: usize, _ord: usize| {
         let (role, index) = DepotRole::role_and_subindex(depot).unwrap();
         match role {
             DepotRole::Source | DepotRole::Grid => {
