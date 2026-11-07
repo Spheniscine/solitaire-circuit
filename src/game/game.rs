@@ -4,7 +4,7 @@ use rand::{Rng, seq::SliceRandom};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 
-use crate::game::{Board, BoardPos, Card, DepotRole, MAX_ENERGY, NUM_RANKS, RANK_KING, RANK_MIN, Skin, Suit};
+use crate::game::{Board, BoardPos, Card, DepotRole, GRID_HEIGHT, MAX_ENERGY, NUM_RANKS, RANK_KING, RANK_MIN, Skin, Suit, grid_pos_to_depot};
 
 pub const ANIMATION_DURATION: Duration = Duration::from_millis(200);
 pub type AnimationKey = u16;
@@ -70,10 +70,21 @@ impl GameState {
         res
     }
 
+    fn is_misdeal(&self) -> bool {
+        let checked_positions = [[1, 0], [GRID_HEIGHT, 0]];
+        checked_positions.iter().any(|&pos| {
+            let d = grid_pos_to_depot(pos);
+            d.is_none_or(|d| !self.board.is_powered(d))
+        })
+    }
+
     pub fn new_game(&mut self) {
-        let deal = Self::new_deal(&mut rand::rng());
-        self.board = Board::from_deal(&deal);
-        self.deal = deal;
+        loop {
+            let deal = Self::new_deal(&mut rand::rng());
+            self.board = Board::from_deal(&deal);
+            self.deal = deal;
+            if !self.is_misdeal() { break; }
+        }
         self.history.clear();
         self.undo_stack.clear();
         self.already_won = false;
