@@ -146,7 +146,6 @@ impl Board {
     }
 
     pub fn from_deal(deal: &[Card]) -> Self {
-        use DepotRole::*;
         assert_eq!(deal.len(), DepotRole::Grid.number_of());
 
         let mut res = Self::empty();
@@ -205,6 +204,7 @@ impl Board {
         self.is_powered_cache[depot]
     }
 
+    // NOTE: works differently than most games; moves only one card, but may swap with another card
     pub fn do_move(&mut self, pos1: BoardPos, pos2: BoardPos) {
         self.selected = None;
 
@@ -234,5 +234,14 @@ impl Board {
 
     pub fn last_pos(&self, depot: usize) -> BoardPos {
         BoardPos::new(depot, self.depots[depot].len().wrapping_sub(1))
+    }
+
+    pub fn is_card_moving_to_foundation(&self) -> bool {
+        self.animation_acts.iter().any(|act| {
+            match act {
+                &AnimationAct::Move(_card, _pos1, pos2) => 
+                    DepotRole::role(pos2.depot_index) == Some(DepotRole::Foundation),
+            }
+        })
     }
 }
