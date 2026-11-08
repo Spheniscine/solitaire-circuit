@@ -123,7 +123,7 @@ pub enum AnimationAct {
 
 pub const MAX_ENERGY: u8 = 3;
 
-#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
+#[derive(Clone, Serialize, Deserialize, Debug, derive_more::PartialEq, derive_more::Eq)]
 pub struct Board {
     pub depots: Vec<Vec<Card>>,
     pub selected: Option<BoardPos>,
@@ -131,6 +131,7 @@ pub struct Board {
     pub animation_acts: Vec<AnimationAct>,
 
     #[serde(skip)]
+    #[eq(skip)]
     is_powered_cache: RefCell<Vec<bool>>,
 }
 
