@@ -28,7 +28,7 @@ pub fn CardComponent(
     #[props(default)]
     ondoubleclick: EventHandler<MouseEvent>,
 ) -> Element {
-    let color = if is_powered {"#FFC927"} else {"#777"};
+    let color = if is_powered {"#0ff"} else {"#777"};
     let mid_x = BASE_CARD_WIDTH / 2.;
     let mid_y = BASE_CARD_HEIGHT / 2.;
     let wires = card.connections().iter().map(|&dir| {
