@@ -4,7 +4,7 @@ use rand::{Rng, seq::SliceRandom};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 
-use crate::{components::LocalStorage, game::{Board, BoardPos, Card, DepotRole, GRID_HEIGHT, MAX_ENERGY, NUM_RANKS, RANK_KING, RANK_MIN, SettingsState, Skin, Suit, grid_pos_to_depot}};
+use crate::{components::LocalStorage, game::{Board, BoardPos, Card, DepotRole, Direction, GRID_HEIGHT, GRID_WIDTH, MAX_ENERGY, NUM_RANKS, RANK_KING, RANK_MIN, SettingsState, Skin, Suit, grid_pos_to_depot}};
 
 pub const ANIMATION_DURATION: Duration = Duration::from_millis(200);
 pub type AnimationKey = u16;
@@ -71,11 +71,18 @@ impl GameState {
     }
 
     fn is_misdeal(&self) -> bool {
-        let checked_positions = [[1, 0], [GRID_HEIGHT, 0]];
-        checked_positions.iter().any(|&pos| {
-            let d = grid_pos_to_depot(pos);
-            d.is_none_or(|d| !self.board.is_powered(d))
-        })
+        // condition: less than three power sources power at least one card
+        let mut count = 0;
+        for r in [1, GRID_HEIGHT] {
+            for c in [0, GRID_WIDTH - 1] {
+                let dir = if r == 1 {Direction::North} else {Direction::South};
+                let dep = grid_pos_to_depot([r, c]).unwrap();
+                if self.board.depots[dep].first().is_some_and(|&c| c.connections().contains(&dir)) {
+                    count += 1;
+                }
+            }
+        }
+        count < 3
     }
 
     pub fn new_game(&mut self) {
