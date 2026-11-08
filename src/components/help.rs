@@ -89,7 +89,7 @@ pub fn Help(mut game_state: Signal<GameState>) -> Element {
                             "Swapping two " Emph{"powered"} " cards in the grid."
                         }
                         li {
-                            "Moving a " Emph{"powered"} " card to the foundations. If you have less than 3 energy, you "
+                            "Moving a " Emph{"powered"} " card to the " Emph{"foundations"} ". If you have less than 3 energy, you "
                             Emph{"regain"} " 1 energy."
                         }
                     }
