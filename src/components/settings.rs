@@ -128,7 +128,8 @@ pub fn Settings(game_state: Signal<GameState>) -> Element {
 
             p {
                 class: "copyright",
-                "© OnlineMathLearning.com"
+                "Game rules: “Circuit Solitaire” by Hempuli", br{},
+                "Webapp © OnlineMathLearning.com"
             }
         }
     }
